@@ -64,6 +64,7 @@ const ChapterModal = () => {
   };
 
   const onSubmit = (data: ChapterFormData) => {
+    console.log("DATA TYPE:", data);
     if (selectedSectionIndex === null) return;
 
     const newChapter: Chapter = {
@@ -137,6 +138,7 @@ const ChapterModal = () => {
                     <div>
                       <Input
                         type="file"
+                        // accept="video/application/pdf,text/plain,.pdf,.txt"
                         accept="video/*"
                         onChange={(e) => {
                           const file = e.target.files?.[0];
@@ -146,7 +148,7 @@ const ChapterModal = () => {
                         }}
                         className="border-none bg-customgreys-darkGrey py-2 cursor-pointer"
                       />
-                      032o{" "}
+
                       {typeof value === "string" && value && (
                         <div className="my-2 text-sm text-gray-600">
                           Current video: {value.split("/").pop()}

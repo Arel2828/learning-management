@@ -99,6 +99,13 @@ const Course = () => {
           </CardContent>
         </Card>
 
+        <Card className="course__tab-card">
+          <CardHeader className="course__tab-header">
+            <CardTitle>Module Content</CardTitle>
+          </CardHeader>
+          <CardContent className="course__tab-body"></CardContent>
+        </Card>
+
         <div className="course__content">
           <Tabs defaultValue="Notes" className="course__tabs">
             <TabsList className="course__tabs-list">
@@ -160,15 +167,11 @@ const Course = () => {
                   <h4 className="course__instructor-name">
                     {course.teacherName}
                   </h4>
-                  <p className="course__instructor-title">Senior UX Designer</p>
+                  <p className="course__instructor-title">JAPAN TEACHER</p>
                 </div>
               </div>
               <div className="course__instructor-bio">
-                <p>
-                  A seasoned Senior UX Designer with over 15 years of experience
-                  in creating intuitive and engaging digital experiences.
-                  Expertise in leading UX design projects.
-                </p>
+                <p>JAPAN TEACHER with 30 years of experience</p>
               </div>
             </CardContent>
           </Card>

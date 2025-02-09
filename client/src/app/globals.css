@@ -715,7 +715,7 @@ input[type="color"] {
 }
 
 .course__instructor-bio {
-  @apply text-sm;
+  @apply text-sm text-white-50;
 }
 
 /* Chapters Sidebar */

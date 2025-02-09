@@ -136,6 +136,8 @@ const Landing = () => {
               </motion.div>
             ))}
         </div>
+
+        <div>Add</div>
       </motion.div>
     </motion.div>
   );

@@ -108,7 +108,7 @@ declare global {
     content: string;
     video?: string | File;
     freePreview?: boolean;
-    type: "Text" | "Quiz" | "Video";
+    type: "Text" | "Quiz" | "Video" | "Pdf";
   }
 
   interface ChapterProgress {
@@ -166,6 +166,7 @@ declare global {
   interface SelectedCourseProps {
     course: Course;
     handleEnrollNow: (courseId: string) => void;
+    // price: string;
   }
 
   interface ToolbarProps {

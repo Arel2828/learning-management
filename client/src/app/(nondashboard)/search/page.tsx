@@ -1,12 +1,14 @@
 "use client";
 
 import Loading from "@/components/Loading";
-import { useGetCoursesQuery } from "@/state/api";
+import { useCreateTransactionMutation, useGetCoursesQuery } from "@/state/api";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import CourseCardSearch from "@/components/CourseCardSearch";
 import SelectedCourse from "./SelectedCourse";
+import { useUser } from "@clerk/nextjs";
+import { useCheckoutNavigation } from "@/hooks/useCheckoutNavigation";
 
 const Search = () => {
   const searchParams = useSearchParams();
@@ -14,6 +16,10 @@ const Search = () => {
   const { data: courses = [], isLoading, isError } = useGetCoursesQuery({});
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const router = useRouter();
+
+  const [createTransaction] = useCreateTransactionMutation();
+  const { navigateToStep } = useCheckoutNavigation();
+  const { user } = useUser();
 
   useEffect(() => {
     if (courses.length > 0) {
@@ -37,11 +43,23 @@ const Search = () => {
         scroll: false,
       };
   };
-  const handleEnrollNow = (courseId: string) => {
-    router.push(`/checkout?step=1^&id=${courseId}&showSignUp=false`),
-      {
-        scroll: false,
+  const handleEnrollNow = async (courseId: string) => {
+    if (selectedCourse?.price === 0) {
+      const transactionData: Partial<Transaction> = {
+        transactionId: "free123456",
+        userId: user?.id,
+        courseId: courseId,
+        paymentProvider: "stripe",
+        amount: 0,
       };
+
+      await createTransaction(transactionData), navigateToStep(3);
+    } else {
+      router.push(`/checkout?step=1^&id=${courseId}&showSignUp=false`),
+        {
+          scroll: false,
+        };
+    }
   };
 
   return (
@@ -79,6 +97,7 @@ const Search = () => {
             <SelectedCourse
               course={selectedCourse}
               handleEnrollNow={handleEnrollNow}
+              // price={formatPrice(selectedCourse.price)}
             />
           </motion.div>
         )}

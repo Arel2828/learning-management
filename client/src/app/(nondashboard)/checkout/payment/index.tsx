@@ -31,6 +31,8 @@ const PaymentPageContent = () => {
       return;
     }
 
+    //Online
+
     const baseUrl = process.env.NEXT_PUBLIC_LOCAL_URL
       ? `http://${process.env.NEXT_PUBLIC_LOCAL_URL}`
       : process.env.NEXT_PUBLIC_VERCEL_URL
@@ -44,6 +46,17 @@ const PaymentPageContent = () => {
       },
       redirect: "if_required",
     });
+
+    //local
+    // const result = await stripe.confirmPayment({
+    //   elements,
+    //   confirmParams: {
+    //     return_url: `${process.env.NEXT_PUBLIC_STRIPE_REDIRECT_URL}?id=${courseId}`,
+    //   },
+    //   redirect: "if_required",
+    // });
+
+    /////
 
     if (result.paymentIntent?.status === "succeeded") {
       const transactionData: Partial<Transaction> = {
