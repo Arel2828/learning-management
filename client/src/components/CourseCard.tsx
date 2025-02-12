@@ -28,12 +28,12 @@ const CourseCard = ({ course, onGoToCourse }: CourseCardProps) => {
         </CardTitle>
 
         <div className="flex items-center gap-2">
-          <Avatar className="w-6 h-6">
+          {/* <Avatar className="w-6 h-6">
             <AvatarImage alt={course.teacherName} />
             <AvatarFallback className="bg-secondary-700 text-black">
               {course.teacherName[0]}
             </AvatarFallback>
-          </Avatar>
+          </Avatar> */}
 
           <p className="text-sm text-customgreys-dirtyGrey">
             {course.teacherName}
