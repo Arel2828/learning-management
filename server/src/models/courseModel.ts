@@ -26,7 +26,7 @@ const chapterSchema = new Schema({
   },
   type: {
     type: String,
-    enum: ["Text", "Quiz", "Video"],
+    enum: ["Text", "Quiz", "Video", "Pdf"],
     required: true,
   },
   title: {
