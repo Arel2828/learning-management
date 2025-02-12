@@ -15,6 +15,7 @@ const Courses = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
 
+  // Query for the enrolled courses
   const {
     data: courses,
     isLoading,
@@ -23,10 +24,10 @@ const Courses = () => {
     skip: !isLoaded || !user,
   });
 
+  // Filter courses based on search term and selected category
   const filteredCourses = useMemo(() => {
     if (!courses) return [];
-
-    return courses.filter((course) => {
+    return courses.filter((course: any) => {
       const matchesSearch = course.title
         .toLowerCase()
         .includes(searchTerm.toLowerCase());
@@ -36,7 +37,8 @@ const Courses = () => {
     });
   }, [courses, searchTerm, selectedCategory]);
 
-  const handleGoToCourse = (course: Course) => {
+  // Navigate to the first chapter (or course page) when a course is clicked
+  const handleGoToCourse = (course: any) => {
     if (
       course.sections &&
       course.sections.length > 0 &&
@@ -62,23 +64,127 @@ const Courses = () => {
     return <div>You are not enrolled in any courses yet.</div>;
 
   return (
-    <div className="user-courses">
+    <div className="user-courses container mx-auto p-4">
       <Header title="My Courses" subtitle="View your enrolled courses" />
       <Toolbar
         onSearch={setSearchTerm}
         onCategoryChange={setSelectedCategory}
       />
-      <div className="user-courses__grid">
-        {filteredCourses.map((course) => (
-          <CourseCard
-            key={course.courseId}
-            course={course}
-            onGoToCourse={handleGoToCourse}
-          />
-        ))}
+      <div className="user-courses__grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+        {filteredCourses.map((course: any) => {
+          // Calculate total and completed chapters for the course
+          const totalChapters = course.sections.reduce(
+            (acc: number, section: any) => acc + section.chapters.length,
+            0
+          );
+          const completedChapters = course.sections.reduce(
+            (acc: number, section: any) =>
+              acc +
+              section.chapters.filter((chapter: any) => chapter.completed)
+                .length,
+            0
+          );
+
+          return (
+            <CourseCard
+              key={course.courseId}
+              course={course}
+              onGoToCourse={handleGoToCourse}
+              progress={{
+                completedChapters,
+                totalChapters,
+              }}
+            />
+          );
+        })}
       </div>
     </div>
   );
 };
 
 export default Courses;
+
+// "use client";
+
+// import Toolbar from "@/components/Toolbar";
+// import CourseCard from "@/components/CourseCard";
+// import { useGetUserEnrolledCoursesQuery } from "@/state/api";
+// import { useRouter } from "next/navigation";
+// import Header from "@/components/Header";
+// import { useUser } from "@clerk/nextjs";
+// import { useState, useMemo } from "react";
+// import Loading from "@/components/Loading";
+
+// const Courses = () => {
+//   const router = useRouter();
+//   const { user, isLoaded } = useUser();
+//   const [searchTerm, setSearchTerm] = useState("");
+//   const [selectedCategory, setSelectedCategory] = useState("all");
+
+//   const {
+//     data: courses,
+//     isLoading,
+//     isError,
+//   } = useGetUserEnrolledCoursesQuery(user?.id ?? "", {
+//     skip: !isLoaded || !user,
+//   });
+
+//   const filteredCourses = useMemo(() => {
+//     if (!courses) return [];
+
+//     return courses.filter((course) => {
+//       const matchesSearch = course.title
+//         .toLowerCase()
+//         .includes(searchTerm.toLowerCase());
+//       const matchesCategory =
+//         selectedCategory === "all" || course.category === selectedCategory;
+//       return matchesSearch && matchesCategory;
+//     });
+//   }, [courses, searchTerm, selectedCategory]);
+
+//   const handleGoToCourse = (course: Course) => {
+//     if (
+//       course.sections &&
+//       course.sections.length > 0 &&
+//       course.sections[0].chapters.length > 0
+//     ) {
+//       const firstChapter = course.sections[0].chapters[0];
+//       router.push(
+//         `/user/courses/${course.courseId}/chapters/${firstChapter.chapterId}`,
+//         {
+//           scroll: false,
+//         }
+//       );
+//     } else {
+//       router.push(`/user/courses/${course.courseId}`, {
+//         scroll: false,
+//       });
+//     }
+//   };
+
+//   if (!isLoaded || isLoading) return <Loading />;
+//   if (!user) return <div>Please sign in to view your courses.</div>;
+//   if (isError || !courses || courses.length === 0)
+//     return <div>You are not enrolled in any courses yet.</div>;
+
+//   return (
+//     <div className="user-courses">
+//       <Header title="My Courses" subtitle="View your enrolled courses" />
+//       <Toolbar
+//         onSearch={setSearchTerm}
+//         onCategoryChange={setSelectedCategory}
+//       />
+//       <div className="user-courses__grid">
+//         {filteredCourses.map((course) => (
+//           <CourseCard
+//             key={course.courseId}
+//             course={course}
+//             onGoToCourse={handleGoToCourse}
+//           />
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Courses;

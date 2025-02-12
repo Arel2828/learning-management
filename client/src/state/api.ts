@@ -3,7 +3,16 @@ import { BaseQueryApi, FetchArgs } from "@reduxjs/toolkit/query";
 import { User } from "@clerk/nextjs/server";
 import { Clerk } from "@clerk/clerk-js";
 import { toast } from "sonner";
+//extra
 
+// export interface CoursePayload {
+//   courseId: string;
+//   title: string;
+//   completedChapters: number;
+//   totalChapters: number;
+// }
+
+// extra
 const customBaseQuery = async (
   args: string | FetchArgs,
   api: BaseQueryApi,
