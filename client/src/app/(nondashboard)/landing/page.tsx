@@ -285,9 +285,11 @@ const ComparisonSection = () => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
               >
-                <button className="bg-blue-400 text-white py-2 px-6 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition duration-300">
-                  Get Started
-                </button>
+                <Link href="/search">
+                  <button className="bg-blue-400 text-white py-2 px-6 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition duration-300">
+                    Get Started
+                  </button>
+                </Link>
               </motion.div>
             )}
           </motion.div>
