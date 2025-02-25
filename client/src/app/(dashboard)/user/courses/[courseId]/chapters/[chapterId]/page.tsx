@@ -110,7 +110,7 @@ const Course = () => {
           <Tabs defaultValue="Notes" className="course__tabs">
             <TabsList className="course__tabs-list">
               <TabsTrigger className="course__tab" value="Notes">
-                Notes
+                Module
               </TabsTrigger>
               <TabsTrigger className="course__tab" value="Resources">
                 Resources
@@ -123,10 +123,12 @@ const Course = () => {
             <TabsContent className="course__tab-content" value="Notes">
               <Card className="course__tab-card">
                 <CardHeader className="course__tab-header">
-                  <CardTitle>Notes Content</CardTitle>
+                  <CardTitle className="text-center">Module Content</CardTitle>
                 </CardHeader>
-                <CardContent className="course__tab-body">
-                  {currentChapter?.content}
+                <CardContent className="course__tab-body text-[20px] font-sans">
+                  <div className="whitespace-pre-wrap">
+                    {currentChapter?.content}
+                  </div>
                 </CardContent>
               </Card>
             </TabsContent>
