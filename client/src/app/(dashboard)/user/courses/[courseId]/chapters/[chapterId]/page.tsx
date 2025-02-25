@@ -99,12 +99,12 @@ const Course = () => {
           </CardContent>
         </Card>
 
-        <Card className="course__tab-card">
+        {/* <Card className="course__tab-card">
           <CardHeader className="course__tab-header">
-            <CardTitle>Module Content</CardTitle>
+            <CardTitle>Module Content</CardTitle>s
           </CardHeader>
           <CardContent className="course__tab-body"></CardContent>
-        </Card>
+        </Card> */}
 
         <div className="course__content">
           <Tabs defaultValue="Notes" className="course__tabs">
