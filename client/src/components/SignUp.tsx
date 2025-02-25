@@ -19,9 +19,9 @@ const SignUpComponent = () => {
     }
     const userType = user?.publicMetadata?.userType as string;
     if (userType === "teacher") {
-      return "/teacher/courses";
+      return "/search";
     }
-    return "/user/courses";
+    return "/search";
   };
   return (
     <SignUp
