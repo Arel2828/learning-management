@@ -73,38 +73,33 @@ const Course = () => {
           </div>
         </div>
 
-        <Card className="course__video">
-          <CardContent className="course__video-container">
-            {currentChapter?.video ? (
-              <ReactPlayer
-                ref={playerRef}
-                url={currentChapter.video as string}
-                controls
-                width="100%"
-                height="100%"
-                onProgress={handleProgress}
-                config={{
-                  file: {
-                    attributes: {
-                      controlsList: "nodownload",
+        {
+          <Card className="course__video">
+            <CardContent className="course__video-container">
+              {currentChapter?.video ? (
+                <ReactPlayer
+                  ref={playerRef}
+                  url={currentChapter.video as string}
+                  controls
+                  width="100%"
+                  height="100%"
+                  onProgress={handleProgress}
+                  config={{
+                    file: {
+                      attributes: {
+                        controlsList: "nodownload",
+                      },
                     },
-                  },
-                }}
-              />
-            ) : (
-              <div className="course__no-video">
-                No video available for this chapter.
-              </div>
-            )}
-          </CardContent>
-        </Card>
-
-        {/* <Card className="course__tab-card">
-          <CardHeader className="course__tab-header">
-            <CardTitle>Module Content</CardTitle>s
-          </CardHeader>
-          <CardContent className="course__tab-body"></CardContent>
-        </Card> */}
+                  }}
+                />
+              ) : (
+                <div className="course__no-video">
+                  No video available for this chapter.
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        }
 
         <div className="course__content">
           <Tabs defaultValue="Notes" className="course__tabs">
@@ -121,16 +116,40 @@ const Course = () => {
             </TabsList>
 
             <TabsContent className="course__tab-content" value="Notes">
-              <Card className="course__tab-card">
-                <CardHeader className="course__tab-header">
-                  <CardTitle className="text-center">Module Content</CardTitle>
-                </CardHeader>
-                <CardContent className="course__tab-body text-[20px] font-sans">
-                  <div className="whitespace-pre-wrap">
-                    {currentChapter?.content}
-                  </div>
-                </CardContent>
-              </Card>
+              <CardTitle className="text-center">Module Content</CardTitle>
+              <CardContent className="course__tab-body text-[20px] font-sans text-white-50">
+                {currentChapter ? (
+                  <>
+                    <div className="whitespace-pre-wrap">
+                      {currentChapter.content}
+                    </div>
+
+                    {/* Complete Button */}
+                    <button
+                      className={`mt-4 px-4 py-2 rounded-lg text-white ${
+                        hasMarkedComplete
+                          ? "bg-green-500 cursor-not-allowed"
+                          : "bg-blue-500"
+                      }`}
+                      onClick={() => {
+                        if (!hasMarkedComplete && currentSection) {
+                          setHasMarkedComplete(true);
+                          updateChapterProgress(
+                            currentSection.sectionId,
+                            currentChapter.chapterId,
+                            true
+                          );
+                        }
+                      }}
+                      disabled={hasMarkedComplete}
+                    >
+                      {hasMarkedComplete ? "Completed" : "Mark as Complete"}
+                    </button>
+                  </>
+                ) : (
+                  <p className="text-red-500">No chapter selected.</p>
+                )}
+              </CardContent>
             </TabsContent>
 
             <TabsContent className="course__tab-content" value="Resources">

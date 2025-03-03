@@ -9,6 +9,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useGetCoursesQuery } from "@/state/api";
 import { useRouter } from "next/navigation";
 import CourseCardSearch from "@/components/CourseCardSearch";
+import { CheckIcon } from "@heroicons/react/24/outline";
+import { useState } from "react";
+import { XMarkIcon } from "@heroicons/react/20/solid";
 import { useUser } from "@clerk/nextjs";
 import {
   PencilIcon,
@@ -210,92 +213,288 @@ const AboutUsSection = () => {
   );
 };
 
+const tiers = [
+  {
+    name: "Hobby",
+    id: "tier-hobby",
+    href: "#",
+    priceMonthly: "$29",
+    description:
+      "The perfect plan if you're just getting started with our product.",
+    features: [
+      "25 products",
+      "Up to 10,000 subscribers",
+      "Advanced analytics",
+      "24-hour support response time",
+    ],
+    featured: false,
+  },
+  {
+    name: "Enterprise",
+    id: "tier-enterprise",
+    href: "#",
+    priceMonthly: "$99",
+    description: "Dedicated support and infrastructure for your company.",
+    features: [
+      "Unlimited products",
+      "Unlimited subscribers",
+      "Advanced analytics",
+      "Dedicated support representative",
+      "Marketing automations",
+      "Custom integrations",
+    ],
+    featured: true,
+  },
+];
+
+function classNames(
+  ...classes: (string | boolean | undefined | null)[]
+): string {
+  return classes.filter(Boolean).join(" ");
+}
+
 const ComparisonSection = () => {
-  const plans = [
-    {
-      name: "Aitomanabi",
-      price: "$15/month",
-      benefits: [
-        "AI-powered personalized learning",
-        "24/7 availability",
-        "Interactive exercises & quizzes",
-        "Affordable pricing",
-      ],
-      bgColor: "bg-indigo-600",
-      textColor: "text-white",
-      button: true,
-    },
-    {
-      name: "Traditional Tutor",
-      price: "$50+/hour",
-      benefits: [
-        "Limited availability",
-        "High hourly cost",
-        "Dependent on tutor’s schedule",
-        "One-size-fits-all approach",
-      ],
-      bgColor: "bg-gray-100",
-      textColor: "text-gray-800",
-      button: false,
-    },
-  ];
-
   return (
-    <motion.div
-      initial={{ y: 20, opacity: 0 }}
-      whileInView={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.5 }}
-      viewport={{ once: true }}
-      className="text-center py-12"
-    >
-      <h2 className="text-4xl font-extrabold text-gray-900">
-        Find the best learning method for you.
-      </h2>
-
-      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-8 max-w-4xl mx-auto">
-        {plans.map((plan, index) => (
-          <motion.div
-            key={index}
-            initial={{ y: 30, opacity: 0, scale: 0.95 }}
-            whileInView={{ y: 0, opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: index * 0.2 }}
-            viewport={{ once: true }}
-            whileHover={{ scale: 1.05 }}
-            className={`p-8 rounded-2xl shadow-lg transition border border-gray-300 ${plan.bgColor} flex flex-col justify-between`}
-          >
-            <div>
-              <h3 className={`text-2xl font-semibold ${plan.textColor}`}>
-                {plan.name}
-              </h3>
-              <p className={`text-3xl font-bold mt-2 ${plan.textColor}`}>
-                {plan.price}
-              </p>
-              <ul className={`mt-4 space-y-2 ${plan.textColor}`}>
-                {plan.benefits.map((benefit, i) => (
-                  <li key={i} className="flex items-center gap-2">
-                    ✅ {benefit}
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {plan.button && (
-              <motion.div
-                className="mt-6"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <Link href="/search">
-                  <button className="bg-blue-400 text-white py-2 px-6 rounded-lg text-lg font-semibold hover:bg-indigo-700 transition duration-300">
-                    Get Started
-                  </button>
-                </Link>
-              </motion.div>
+    <div className="relative isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
+      <div className="mx-auto max-w-4xl text-center">
+        <h2 className="text-base font-semibold text-indigo-600">Pricing</h2>
+        <p className="mt-2 text-5xl font-semibold tracking-tight text-gray-900 sm:text-6xl">
+          Choose the right plan for you
+        </p>
+      </div>
+      <p className="mx-auto mt-6 max-w-2xl text-center text-lg font-medium text-gray-600 sm:text-xl">
+        Choose an affordable plan that’s packed with the best features for
+        engaging your audience, creating customer loyalty, and driving sales.
+      </p>
+      <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 items-center gap-y-6 sm:mt-20 sm:gap-y-0 lg:max-w-4xl lg:grid-cols-2">
+        {tiers.map((tier) => (
+          <div
+            key={tier.id}
+            className={classNames(
+              tier.featured ? "bg-gray-900 shadow-2xl" : "bg-white/60",
+              "rounded-3xl p-8 ring-1 ring-gray-900/10 sm:p-10"
             )}
-          </motion.div>
+          >
+            <h3
+              className={classNames(
+                tier.featured ? "text-indigo-400" : "text-indigo-600",
+                "text-base font-semibold"
+              )}
+            >
+              {tier.name}
+            </h3>
+            <p className="mt-4 flex items-baseline gap-x-2">
+              <span
+                className={classNames(
+                  tier.featured ? "text-white" : "text-gray-900",
+                  "text-5xl font-semibold"
+                )}
+              >
+                {tier.priceMonthly}
+              </span>
+              <span
+                className={classNames(
+                  tier.featured ? "text-gray-400" : "text-gray-500",
+                  "text-base"
+                )}
+              >
+                /month
+              </span>
+            </p>
+            <p
+              className={classNames(
+                tier.featured ? "text-gray-300" : "text-gray-600",
+                "mt-6 text-base"
+              )}
+            >
+              {tier.description}
+            </p>
+            <ul
+              className={classNames(
+                tier.featured ? "text-gray-300" : "text-gray-600",
+                "mt-8 space-y-3 text-sm"
+              )}
+            >
+              {tier.features.map((feature) => (
+                <li key={feature} className="flex gap-x-3">
+                  <CheckIcon
+                    aria-hidden="true"
+                    className={classNames(
+                      tier.featured ? "text-indigo-400" : "text-indigo-600",
+                      "h-6 w-5 flex-none"
+                    )}
+                  />
+                  {feature}
+                </li>
+              ))}
+            </ul>
+            <a
+              href={tier.href}
+              className={classNames(
+                tier.featured
+                  ? "bg-indigo-500 text-white shadow-xs hover:bg-indigo-400"
+                  : "text-indigo-600 ring-1 ring-indigo-200 hover:ring-indigo-300",
+                "mt-8 block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold"
+              )}
+            >
+              Get started today
+            </a>
+          </div>
         ))}
       </div>
-    </motion.div>
+    </div>
+  );
+};
+
+const faqs = [
+  {
+    question: "How does AI help in learning Japanese?",
+    answer:
+      "Our AI adapts to your learning style, providing personalized lessons, instant feedback, and interactive exercises tailored to your progress.",
+  },
+  {
+    question: "Is the AI assessment accurate?",
+    answer:
+      "Yes, the AI assessment is designed to analyze pronunciation, grammar, and vocabulary with precision, offering real-time feedback to enhance your learning.",
+  },
+  {
+    question: "Can I track my learning progress?",
+    answer:
+      "Absolutely! You can monitor your progress with AI-driven insights and detailed reports, helping you stay on track with your learning goals.",
+  },
+];
+
+const FAQSection = () => {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const toggleFAQ = (index: number) => {
+    setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
+  };
+
+  return (
+    <div className="bg-white py-24 sm:py-32">
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="mx-auto max-w-2xl text-center"
+        >
+          <h2 className="text-base/7 font-semibold text-indigo-600">
+            Frequently Asked Questions
+          </h2>
+          <p className="mt-2 text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
+            Everything You Need to Know
+          </p>
+        </motion.div>
+        <dl className="mt-10 space-y-6 max-w-2xl mx-auto text-base text-gray-600">
+          {faqs.map((faq, index) => (
+            <motion.div
+              key={faq.question}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.6,
+                ease: "easeOut",
+                delay: index * 0.2,
+              }}
+              className="border-b border-gray-300 pb-6"
+            >
+              <dt
+                className="cursor-pointer flex justify-between text-lg font-semibold text-gray-900"
+                onClick={() => toggleFAQ(index)}
+              >
+                {faq.question}
+                <span>{openIndex === index ? "-" : "+"}</span>
+              </dt>
+              {openIndex === index && (
+                <motion.dd
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  transition={{ duration: 0.4, ease: "easeOut" }}
+                  className="mt-2 text-gray-600"
+                >
+                  {faq.answer}
+                </motion.dd>
+              )}
+            </motion.div>
+          ))}
+        </dl>
+      </div>
+    </div>
+  );
+};
+
+const banner = {
+  title: "GeneriCon 2023",
+  message: "Join us in Denver from June 7 – 9 to see what’s coming next.",
+  linkText: "Register now",
+  linkHref: "#",
+};
+
+const Banner = () => {
+  return (
+    <div className="relative isolate flex items-center gap-x-6 overflow-hidden bg-gray-50 px-6 py-2.5 sm:px-3.5 sm:before:flex-1 rounded-full mt-6">
+      {/* Left Background Shape */}
+      <div
+        aria-hidden="true"
+        className="absolute top-1/2 left-[max(-7rem,calc(50%-52rem))] -z-10 -translate-y-1/2 transform-gpu blur-2xl"
+      >
+        <div
+          style={{
+            clipPath:
+              "polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)",
+          }}
+          className="aspect-577/310 w-[36.0625rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
+        />
+      </div>
+
+      {/* Right Background Shape */}
+      <div
+        aria-hidden="true"
+        className="absolute top-1/2 left-[max(45rem,calc(50%+8rem))] -z-10 -translate-y-1/2 transform-gpu blur-2xl"
+      >
+        <div
+          style={{
+            clipPath:
+              "polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)",
+          }}
+          className="aspect-577/310 w-[36.0625rem] bg-gradient-to-r from-[#ff80b5] to-[#9089fc] opacity-30"
+        />
+      </div>
+
+      {/* Banner Content */}
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+        <p className="text-sm/6 text-gray-900">
+          <strong className="font-semibold">{banner.title}</strong>
+          <svg
+            viewBox="0 0 2 2"
+            aria-hidden="true"
+            className="mx-2 inline size-0.5 fill-current"
+          >
+            <circle r={1} cx={1} cy={1} />
+          </svg>
+          {banner.message}
+        </p>
+        <a
+          href={banner.linkHref}
+          className="flex-none rounded-full bg-gray-900 px-3.5 py-1 text-sm font-semibold text-white shadow-xs hover:bg-gray-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900"
+        >
+          {banner.linkText} <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+
+      {/* Close Button */}
+      <div className="flex flex-1 justify-end">
+        <button
+          type="button"
+          className="-m-3 p-3 focus-visible:outline-offset-[-4px]"
+        >
+          <span className="sr-only">Dismiss</span>
+          <XMarkIcon aria-hidden="true" className="size-5 text-gray-900" />
+        </button>
+      </div>
+    </div>
   );
 };
 
@@ -319,6 +518,8 @@ const Landing = () => {
       transition={{ duration: 0.5 }}
       className="landing"
     >
+      <Banner />
+
       <motion.div
         initial={{ y: 20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -396,6 +597,7 @@ const Landing = () => {
       <ComparisonSection />
       <FeatureSection />
       <AboutUsSection />
+      <FAQSection />
     </motion.div>
   );
 };
