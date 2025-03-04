@@ -76,7 +76,7 @@ const AppSidebar = () => {
                     height={20}
                     className="app-sidebar__logo"
                   />
-                  <p className="app-sidebar__title">AItoManabi</p>
+                  <p className="app-sidebar__title text-white-50">AItoManabi</p>
                 </div>
                 <PanelLeft className="app-sidebar__collapse-icon" />
               </div>
@@ -110,12 +110,12 @@ const AppSidebar = () => {
                     scroll={false}
                   >
                     <link.icon
-                      className={isActive ? "text-white-50" : "text-gray-500"}
+                      className={isActive ? "text-white-50" : "text-white-50"}
                     />
                     <span
                       className={cn(
                         "app-sidebar__nav-text",
-                        isActive ? "text-white-50" : "text-gray-500"
+                        isActive ? "text-white-50" : "text-white-50"
                       )}
                     >
                       {link.label}
