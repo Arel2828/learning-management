@@ -292,33 +292,34 @@ const AboutUsSection = () => {
 
 const tiers = [
   {
-    name: "Hobby",
-    id: "tier-hobby",
+    name: "AiToManabi",
+    id: "tier-basic",
     href: "#",
-    priceMonthly: "$29",
+    priceMonthly: "₱300",
+    priceUnit: "/course",
     description:
-      "The perfect plan if you're just getting started with our product.",
+      "Perfect for beginners starting their Japanese learning journey.",
     features: [
-      "25 products",
-      "Up to 10,000 subscribers",
-      "Advanced analytics",
-      "24-hour support response time",
+      "Access to beginner lessons",
+      "Basic vocabulary and grammar",
+      "Interactive quizzes",
+      "Community support forum",
     ],
     featured: false,
   },
   {
-    name: "Enterprise",
-    id: "tier-enterprise",
+    name: "Traditional Tutor",
+    id: "tier-pro",
     href: "#",
-    priceMonthly: "$99",
-    description: "Dedicated support and infrastructure for your company.",
+    priceMonthly: "₱600",
+    priceUnit: "/hr",
+    description: "Expensive and outdated method with limited flexibility.",
     features: [
-      "Unlimited products",
-      "Unlimited subscribers",
-      "Advanced analytics",
-      "Dedicated support representative",
-      "Marketing automations",
-      "Custom integrations",
+      "High cost per session",
+      "Fixed schedule with little flexibility",
+      "Limited digital resources",
+      "One-on-one interaction but inconsistent quality",
+      "No AI-driven assistance",
     ],
     featured: true,
   },
@@ -334,27 +335,28 @@ const ComparisonSection = () => {
   return (
     <div className="relative isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
       <div className="mx-auto max-w-4xl text-center">
-        <h2 className="text-base font-semibold text-indigo-600">Pricing</h2>
         <p className="mt-2 text-5xl font-semibold tracking-tight text-gray-900 sm:text-6xl">
-          Choose the right plan for you
+          Choose the best learning method for you
         </p>
       </div>
       <p className="mx-auto mt-6 max-w-2xl text-center text-lg font-medium text-gray-600 sm:text-xl">
-        Choose an affordable plan that’s packed with the best features for
-        engaging your audience, creating customer loyalty, and driving sales.
+        Compare AI-driven learning with traditional tutoring and find the most
+        effective way to master Japanese at your own pace.
       </p>
       <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 items-center gap-y-6 sm:mt-20 sm:gap-y-0 lg:max-w-4xl lg:grid-cols-2">
         {tiers.map((tier) => (
           <div
             key={tier.id}
             className={classNames(
-              tier.featured ? "bg-gray-900 shadow-2xl" : "bg-white/60",
+              tier.featured
+                ? "bg-gray-900 shadow-2xl opacity-50"
+                : "bg-white/60",
               "rounded-3xl p-8 ring-1 ring-gray-900/10 sm:p-10"
             )}
           >
             <h3
               className={classNames(
-                tier.featured ? "text-indigo-400" : "text-indigo-600",
+                tier.featured ? "text-red-400" : "text-indigo-600",
                 "text-base font-semibold"
               )}
             >
@@ -363,7 +365,9 @@ const ComparisonSection = () => {
             <p className="mt-4 flex items-baseline gap-x-2">
               <span
                 className={classNames(
-                  tier.featured ? "text-white" : "text-gray-900",
+                  tier.featured
+                    ? "text-gray-400 line-through"
+                    : "text-gray-900",
                   "text-5xl font-semibold"
                 )}
               >
@@ -372,15 +376,15 @@ const ComparisonSection = () => {
               <span
                 className={classNames(
                   tier.featured ? "text-gray-400" : "text-gray-500",
-                  "text-base"
+                  "text-sm"
                 )}
               >
-                /month
+                {tier.priceUnit}
               </span>
             </p>
             <p
               className={classNames(
-                tier.featured ? "text-gray-300" : "text-gray-600",
+                tier.featured ? "text-gray-400" : "text-gray-600",
                 "mt-6 text-base"
               )}
             >
@@ -388,7 +392,7 @@ const ComparisonSection = () => {
             </p>
             <ul
               className={classNames(
-                tier.featured ? "text-gray-300" : "text-gray-600",
+                tier.featured ? "text-gray-400" : "text-gray-600",
                 "mt-8 space-y-3 text-sm"
               )}
             >
@@ -397,7 +401,7 @@ const ComparisonSection = () => {
                   <CheckIcon
                     aria-hidden="true"
                     className={classNames(
-                      tier.featured ? "text-indigo-400" : "text-indigo-600",
+                      tier.featured ? "text-red-400" : "text-indigo-600",
                       "h-6 w-5 flex-none"
                     )}
                   />
@@ -405,17 +409,17 @@ const ComparisonSection = () => {
                 </li>
               ))}
             </ul>
-            <a
-              href={tier.href}
-              className={classNames(
-                tier.featured
-                  ? "bg-indigo-500 text-white shadow-xs hover:bg-indigo-400"
-                  : "text-indigo-600 ring-1 ring-indigo-200 hover:ring-indigo-300",
-                "mt-8 block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold"
-              )}
-            >
-              Get started today
-            </a>
+            {tier.id !== "tier-pro" && (
+              <a
+                href={tier.href}
+                className={classNames(
+                  "text-indigo-600 ring-1 ring-indigo-200 hover:ring-indigo-300",
+                  "mt-8 block rounded-md px-3.5 py-2.5 text-center text-sm font-semibold"
+                )}
+              >
+                Choose This Plan
+              </a>
+            )}
           </div>
         ))}
       </div>
@@ -503,9 +507,10 @@ const FAQSection = () => {
 };
 
 const banner = {
-  title: "GeneriCon 2023",
-  message: "Join us in Denver from June 7 – 9 to see what’s coming next.",
-  linkText: "Register now",
+  title: "Master Japanese with AiToManabi",
+  message:
+    "Experience the future of language learning with AI-powered lessons and interactive support.",
+  linkText: "Start Learning Now",
   linkHref: "#",
 };
 

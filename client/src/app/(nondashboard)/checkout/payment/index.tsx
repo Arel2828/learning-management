@@ -13,6 +13,7 @@ import { CreditCard } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCreateTransactionMutation } from "@/state/api";
 import { toast } from "sonner";
+import PaymentButton from "../../../../components/PaymentButton";
 
 const PaymentPageContent = () => {
   const stripe = useStripe();
@@ -33,28 +34,28 @@ const PaymentPageContent = () => {
 
     //Online
 
-    const baseUrl = process.env.NEXT_PUBLIC_LOCAL_URL
-      ? `http://${process.env.NEXT_PUBLIC_LOCAL_URL}`
-      : process.env.NEXT_PUBLIC_VERCEL_URL
-      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-      : undefined;
+    // const baseUrl = process.env.NEXT_PUBLIC_LOCAL_URL
+    //   ? `http://${process.env.NEXT_PUBLIC_LOCAL_URL}`
+    //   : process.env.NEXT_PUBLIC_VERCEL_URL
+    //   ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    //   : undefined;
 
-    const result = await stripe.confirmPayment({
-      elements,
-      confirmParams: {
-        return_url: `${baseUrl}/checkout?step=3&id=${courseId}`,
-      },
-      redirect: "if_required",
-    });
-
-    //local
     // const result = await stripe.confirmPayment({
     //   elements,
     //   confirmParams: {
-    //     return_url: `${process.env.NEXT_PUBLIC_STRIPE_REDIRECT_URL}?id=${courseId}`,
+    //     return_url: `${baseUrl}/checkout?step=3&id=${courseId}`,
     //   },
     //   redirect: "if_required",
     // });
+
+    // local
+    const result = await stripe.confirmPayment({
+      elements,
+      confirmParams: {
+        return_url: `${process.env.NEXT_PUBLIC_STRIPE_REDIRECT_URL}?id=${courseId}`,
+      },
+      redirect: "if_required",
+    });
 
     ///
 
@@ -95,6 +96,15 @@ const PaymentPageContent = () => {
           >
             <div className="payment__content">
               <h1 className="payment__title">Checkout</h1>
+              <div className="flex flex-col items-center justify-center">
+                <h1 className="text-2xl font-bold">Buy Product</h1>
+                <PaymentButton
+                  userId={user!.id}
+                  price={course?.price || 0}
+                  currency="PHP"
+                  productName={courseId}
+                />
+              </div>
               <p className="payment__subtitle">
                 Fill out the payment details below to complete your purchase.
               </p>
@@ -142,9 +152,11 @@ const PaymentPageContent = () => {
 };
 
 const PaymentPage = () => (
-  <StripeProvider>
-    <PaymentPageContent />
-  </StripeProvider>
+  <>
+    <StripeProvider>
+      <PaymentPageContent />
+    </StripeProvider>
+  </>
 );
 
 export default PaymentPage;

@@ -65,6 +65,18 @@ declare global {
     savePaymentMethod?: boolean;
   }
 
+  interface TransactionPaymentWall {
+    userId: string;
+    currency: string;
+    price: number;
+    productName: string;
+    // courseId: string;
+    // paymentProvider: "stripe";
+    // paymentMethodId?: string;
+    // amount: number; // Stored in cents
+    // savePaymentMethod?: boolean;
+  }
+
   interface DateRange {
     from: string | undefined;
     to: string | undefined;

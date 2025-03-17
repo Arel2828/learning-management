@@ -25,13 +25,23 @@ const Courses = () => {
 
   const filteredCourses = useMemo(() => {
     if (!courses) return [];
+    // Define the ignored categories for "Other Categories"
+    const ignoredCategories = ["N-1", "N-2", "N-3", "N-4", "N-5"];
 
     return courses.filter((course) => {
       const matchesSearch = course.title
         .toLowerCase()
         .includes(searchTerm.toLowerCase());
-      const matchesCategory =
-        selectedCategory === "all" || course.category === selectedCategory;
+      let matchesCategory = false;
+
+      if (selectedCategory === "all") {
+        matchesCategory = true;
+      } else if (selectedCategory === "other") {
+        // For "Other Categories", exclude courses that belong to the ignored ones.
+        matchesCategory = !ignoredCategories.includes(course.category);
+      } else {
+        matchesCategory = course.category === selectedCategory;
+      }
       return matchesSearch && matchesCategory;
     });
   }, [courses, searchTerm, selectedCategory]);

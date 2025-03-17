@@ -173,6 +173,16 @@ export const api = createApi({
         body: { amount },
       }),
     }),
+    createPaymentWallPaymentIntent: build.mutation<
+      { payment_url: string },
+      { price: number; userId: string; currency: string; productName: string }
+    >({
+      query: ({ userId, price, currency, productName }) => ({
+        url: `/transactions/paymentwall/payment-intent`,
+        method: "POST",
+        body: { userId, price, currency, productName },
+      }),
+    }),
     createTransaction: build.mutation<Transaction, Partial<Transaction>>({
       query: (transaction) => ({
         url: "transactions",
@@ -253,6 +263,7 @@ export const {
   useGetTransactionsQuery,
   useCreateTransactionMutation,
   useCreateStripePaymentIntentMutation,
+  useCreatePaymentWallPaymentIntentMutation,
   useGetUserEnrolledCoursesQuery,
   useGetUserCourseProgressQuery,
   useUpdateUserCourseProgressMutation,

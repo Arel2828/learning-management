@@ -20,13 +20,20 @@ import { useAppDispatch, useAppSelector } from "@/state/redux";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Plus } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import DroppableComponent from "./Droppable";
 import ChapterModal from "./ChapterModal";
 import SectionModal from "./SectionModal";
-// import ChapterModal from "./ChapterModal";
-// import SectionModal from "./SectionModal";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 
 const CourseEditor = () => {
   const router = useRouter();
@@ -35,6 +42,15 @@ const CourseEditor = () => {
   const { data: course, isLoading, refetch } = useGetCourseQuery(id);
   const [updateCourse] = useUpdateCourseMutation();
   const [getUploadVideoUrl] = useGetUploadVideoUrlMutation();
+  const [categories, setCategories] = useState([
+    { value: "N-5", label: "N-5" },
+    { value: "N-4", label: "N-4" },
+    { value: "N-3", label: "N-3" },
+    { value: "N-2", label: "N-2" },
+    { value: "N-1", label: "N-1" },
+  ]);
+  const [newCategory, setNewCategory] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const dispatch = useAppDispatch();
   const { sections } = useAppSelector((state) => state.global.courseEditor);
@@ -62,6 +78,18 @@ const CourseEditor = () => {
       dispatch(setSections(course.sections || []));
     }
   }, [course, methods]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleAddCategory = () => {
+    if (newCategory.trim()) {
+      const newCat = {
+        value: newCategory.trim(),
+        label: newCategory.trim(),
+      };
+      setCategories((prev) => [...prev, newCat]);
+      setIsDialogOpen(false);
+      setNewCategory("");
+    }
+  };
 
   const onSubmit = async (data: CourseFormData) => {
     try {
@@ -147,22 +175,45 @@ const CourseEditor = () => {
                   initialValue={course?.description}
                 />
 
-                <CustomFormField
-                  name="courseCategory"
-                  label="Course Category"
-                  type="select"
-                  placeholder="Select category here"
-                  options={[
-                    { value: "N-5", label: "N-5" },
-                    { value: "N-4", label: "N-4" },
-                    { value: "N-3", label: "N-3" },
-                    {
-                      value: "N-2",
-                      label: "N-2",
-                    },
-                  ]}
-                  initialValue={course?.category}
-                />
+                <div className="flex gap-2 items-end">
+                  <CustomFormField
+                    name="courseCategory"
+                    label="Course Category"
+                    type="select"
+                    placeholder="Select category here"
+                    options={categories}
+                    initialValue={course?.category}
+                    className="flex-1"
+                  />
+                  <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                    <DialogTrigger asChild>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="mb-1"
+                      >
+                        <Plus className="h-4 w-4 mr-2" />
+                        Add Category
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Add New Category</DialogTitle>
+                      </DialogHeader>
+                      <Input
+                        value={newCategory}
+                        onChange={(e) => setNewCategory(e.target.value)}
+                        placeholder="Enter category name"
+                      />
+                      <DialogFooter>
+                        <Button onClick={handleAddCategory}>
+                          Add Category
+                        </Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                </div>
 
                 <CustomFormField
                   name="coursePrice"
@@ -215,83 +266,3 @@ const CourseEditor = () => {
 };
 
 export default CourseEditor;
-// import { courseSchema } from "@/lib/schemas";
-// import {
-//   centsToDollars,
-//   createCourseFormData,
-//   uploadAllVideos,
-// } from "@/lib/utils";
-// import { setSections } from "@/state";
-// import { useGetCourseQuery, useUpdateCourseMutation } from "@/state/api";
-// import { useAppDispatch, useAppSelector } from "@/state/redux";
-// import { zodResolver } from "@hookform/resolvers/zod";
-// import { ArrowLeft } from "lucide-react";
-// import { useParams, useRouter } from "next/navigation";
-// import React, { useEffect } from "react";
-// import { useForm } from "react-hook-form";
-
-// const CourseEditor = () => {
-//   const router = useRouter();
-//   const params = useParams();
-//   const id = params.id as string;
-//   const { data: course, isLoading, refetch } = useGetCourseQuery(id);
-//   const [updateCourse] = useUpdateCourseMutation();
-//   const dispatch = useAppDispatch();
-//   const { sections } = useAppSelector((state) => state.global.courseEditor);
-
-//   const methods = useForm<CourseFormData>({
-//     resolver: zodResolver(courseSchema),
-//     defaultValues: {
-//       courseTitle: "",
-//       courseDescription: "",
-//       courseCategory: "",
-//       coursePrice: "0",
-//       courseStatus: false,
-//     },
-//   });
-//   useEffect(() => {
-//     if (course) {
-//       methods.reset({
-//         courseTitle: course.title,
-//         courseDescription: course.description,
-//         courseCategory: course.category,
-//         coursePrice: centsToDollars(course.price),
-//         courseStatus: course.status === "Published",
-//       });
-//       dispatch(setSections(course.sections || []));
-//     }
-//   }, [course, methods]); // eslint-disable-line react-hooks/exhaustive-deps
-
-//   const onSubmit = async (data: CourseFormData) => {
-//     try {
-//       const formData = createCourseFormData(data, sections);
-
-//       await updateCourse({
-//         courseId: id,
-//         formData,
-//       }).unwrap();
-
-//       refetch();
-//     } catch (error) {
-//       console.error("Failed to update course:", error);
-//     }
-//   };
-
-//   //upload video
-
-//   return (
-//     <div>
-//       <div className="flex items-center gap-5 mb-5">
-//         <button
-//           className="flex items-center border border-customgreys-dirtyGrey rounded-lg p-2 gap-2 cursor-pointer hover:bg-customgreys-dirtyGrey hover:text-white-100 text-customgreys-dirtyGrey"
-//           onClick={() => router.push("/teacher/courses", { scroll: false })}
-//         >
-//           <ArrowLeft className="w-4 h-4" />
-//           <span>Back to Courses</span>
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default CourseEditor;

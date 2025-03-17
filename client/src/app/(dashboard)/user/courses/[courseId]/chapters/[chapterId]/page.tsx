@@ -74,31 +74,31 @@ const Course = () => {
         </div>
 
         {
-          <Card className="course__video">
-            <CardContent className="course__video-container">
-              {currentChapter?.video ? (
-                <ReactPlayer
-                  ref={playerRef}
-                  url={currentChapter.video as string}
-                  controls
-                  width="100%"
-                  height="100%"
-                  onProgress={handleProgress}
-                  config={{
-                    file: {
-                      attributes: {
-                        controlsList: "nodownload",
-                      },
-                    },
-                  }}
-                />
-              ) : (
-                <div className="course__no-video">
-                  No video available for this chapter.
-                </div>
-              )}
-            </CardContent>
-          </Card>
+          // <Card className="course__video">
+          //   <CardContent className="course__video-container">
+          //     {currentChapter?.video ? (
+          //       <ReactPlayer
+          //         ref={playerRef}
+          //         url={currentChapter.video as string}
+          //         controls
+          //         width="100%"
+          //         height="100%"
+          //         onProgress={handleProgress}
+          //         config={{
+          //           file: {
+          //             attributes: {
+          //               controlsList: "nodownload",
+          //             },
+          //           },
+          //         }}
+          //       />
+          //     ) : (
+          //       <div className="course__no-video">
+          //         No video available for this chapter.
+          //       </div>
+          //     )}
+          //   </CardContent>
+          // </Card>
         }
 
         <div className="course__content">
@@ -175,7 +175,7 @@ const Course = () => {
             </TabsContent>
           </Tabs>
 
-          <Card className="course__instructor-card">
+          {/* <Card className="course__instructor-card">
             <CardContent className="course__instructor-info">
               <div className="course__instructor-header">
                 <Avatar className="course__instructor-avatar">
@@ -195,7 +195,7 @@ const Course = () => {
                 <p>JAPAN TEACHER with 30 years of experience</p>
               </div>
             </CardContent>
-          </Card>
+          </Card> */}
         </div>
       </div>
     </div>

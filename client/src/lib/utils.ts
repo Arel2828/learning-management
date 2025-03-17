@@ -632,7 +632,8 @@ export const courseCategories = [
   { value: "N-4", label: "N-4" },
   { value: "N-3", label: "N-3" },
   { value: "N-2", label: "N-2" },
-] as const;
+  { value: "N-1", label: "N-1" },
+];
 
 export const customDataGridStyles = {
   border: "none",
