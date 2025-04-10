@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { useCreateTransactionMutation } from "@/state/api";
 import { toast } from "sonner";
 import PaymentButton from "../../../../components/PaymentButton";
+import { formatPrice } from "@/lib/utils";
 
 const PaymentPageContent = () => {
   const stripe = useStripe();
@@ -79,6 +80,12 @@ const PaymentPageContent = () => {
 
   if (!course) return null;
 
+  const convertToNumber = (currencyString: string) => {
+    return parseFloat(currencyString.replace(/[^0-9.]/g, ""));
+  };
+
+  const toPesoAmount = convertToNumber(formatPrice(course.price)) * 57.35;
+
   return (
     <div className="payment">
       <div className="payment__container">
@@ -97,10 +104,20 @@ const PaymentPageContent = () => {
             <div className="payment__content">
               <h1 className="payment__title">Checkout</h1>
               <div className="flex flex-col items-center justify-center">
-                <h1 className="text-2xl font-bold">Buy Product</h1>
+                <h1 className="text-2xl font-bold flex items-center space-x-2">
+                  <a href="https://imgbb.com/">
+                    <img
+                      src="https://i.ibb.co/9CKfjzB/images-1-removebg-preview.png"
+                      alt="PaymentWall Logo"
+                      className="h-8"
+                    />
+                  </a>
+                  <span>Pay Using PaymentWall</span>
+                </h1>
+
                 <PaymentButton
                   userId={user!.id}
-                  price={course?.price || 0}
+                  price={toPesoAmount || 0}
                   currency="PHP"
                   productName={courseId}
                 />

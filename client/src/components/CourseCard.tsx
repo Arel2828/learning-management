@@ -26,7 +26,7 @@ const CourseCard = ({ course, onGoToCourse }: CourseCardProps) => {
         <CardTitle className="course-card__title">
           {course.title}: {course.description}
         </CardTitle>
-        {/* 
+        {/*
         <div className="flex items-center gap-2">
           <Avatar className="w-6 h-6">
             <AvatarImage alt={course.teacherName} />

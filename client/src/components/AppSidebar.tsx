@@ -19,6 +19,7 @@ import {
   PanelLeft,
   Settings,
   User,
+  ClipboardList,
 } from "lucide-react";
 import Loading from "./Loading";
 import Image from "next/image";
@@ -43,6 +44,7 @@ const AppSidebar = () => {
       { icon: DollarSign, label: "Billing", href: "/teacher/billing" },
       { icon: User, label: "Profile", href: "/teacher/profile" },
       { icon: Settings, label: "Settings", href: "/teacher/settings" },
+      { icon: ClipboardList, label: "Management", href: "/teacher/management" },
     ],
   };
 

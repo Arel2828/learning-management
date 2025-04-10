@@ -73,7 +73,7 @@ const UserBilling = () => {
                   <TableHead className="billing__table-cell">Date</TableHead>
                   <TableHead className="billing__table-cell">Amount</TableHead>
                   <TableHead className="billing__table-cell">
-                    Payment Method
+                    Payment Channel
                   </TableHead>
                 </TableRow>
               </TableHeader>

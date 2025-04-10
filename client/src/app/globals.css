@@ -651,7 +651,7 @@ input[type="color"] {
 }
 
 .course__content {
-  @apply flex gap-4 mt-1;
+  @apply flex gap-4 mt-12;
 }
 
 .course__tabs {
@@ -659,7 +659,7 @@ input[type="color"] {
 }
 
 .course__tabs-list {
-  @apply flex justify-center gap-10;
+  @apply flex justify-start gap-10;
 }
 
 .course__tab {
@@ -679,7 +679,7 @@ input[type="color"] {
 }
 
 .course__tab-body {
-  @apply p-2;
+  @apply p-10;
 }
 
 .course__instructor-card {

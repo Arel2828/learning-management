@@ -775,3 +775,30 @@ async function uploadVideo(
     throw error;
   }
 }
+
+// Utility function for uploading an image to a server
+export const uploadImage = async (
+  file: File,
+  uploadUrl: string,
+  fileType: string
+): Promise<string> => {
+  try {
+    const response = await fetch(uploadUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": fileType,
+      },
+      body: file,
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to upload image");
+    }
+
+    const data = await response.json();
+    return data.imageUrl; // Assuming the server responds with the image URL
+  } catch (error) {
+    console.error("Error uploading image:", error);
+    throw error;
+  }
+};

@@ -54,6 +54,7 @@ const Navbar = ({ isCoursePage }: { isCoursePage: boolean }) => {
           </button>
 
           {/* Profile Button */}
+
           <UserButton
             appearance={{
               baseTheme: dark,

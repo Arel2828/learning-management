@@ -41,7 +41,7 @@ const PaymentButton: React.FC<PaymentProps> = ({
       const transactionDataPaymentWall: Partial<TransactionPaymentWall> = {
         userId,
         productName,
-        currency: "usd",
+        currency,
         // paymentProvider: "stripe",
         price,
         // amount: price || 0,
@@ -75,7 +75,7 @@ const PaymentButton: React.FC<PaymentProps> = ({
       disabled={loading}
       className="px-4 py-2 bg-blue-500 text-white rounded"
     >
-      {loading ? "Processing..." : "Pay Now"}
+      {loading ? "Processing..." : `Pay Now - ${price} ${currency}`}
     </button>
   );
 };
