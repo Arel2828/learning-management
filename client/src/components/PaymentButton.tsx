@@ -52,7 +52,7 @@ const PaymentButton: React.FC<PaymentProps> = ({
       //   navigateToStep(3));
 
       const response = await createTransactionPaymentWall(
-        // @ts-expect-error
+        // @ts-expect-error: We know this will fail but it's intentional
         transactionDataPaymentWall
       );
 
