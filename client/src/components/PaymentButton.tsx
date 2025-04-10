@@ -47,13 +47,12 @@ const PaymentButton: React.FC<PaymentProps> = ({
         // amount: price || 0,
       };
 
-      // @ts-ignore
       // const response =
       //   (await createTransactionPaymentWall(transactionDataPaymentWall),
       //   navigateToStep(3));
 
       const response = await createTransactionPaymentWall(
-        // @ts-ignore
+        // @ts-expect-error
         transactionDataPaymentWall
       );
 
