@@ -104,6 +104,8 @@ declare global {
     course: Course;
     onEdit: (course: Course) => void;
     onDelete: (course: Course) => void;
+    onArchive: (course: Course) => void;
+    onUnarchive: (course: Course) => void;
     isOwner: boolean;
   }
 

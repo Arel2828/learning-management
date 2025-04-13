@@ -13,6 +13,7 @@ import { toast } from "sonner";
 // }
 
 // extra
+
 const customBaseQuery = async (
   args: string | FetchArgs,
   api: BaseQueryApi,
@@ -137,7 +138,24 @@ export const api = createApi({
       }),
       invalidatesTags: ["Courses"],
     }),
-
+    //archive
+    archiveCourse: build.mutation<{ message: string }, string>({
+      query: (courseId) => ({
+        url: `courses/${courseId}`,
+        method: "PATCH",
+        body: { archived: true },
+      }),
+      invalidatesTags: ["Courses"],
+    }),
+    //unarchive
+    unarchiveCourse: build.mutation<{ message: string }, string>({
+      query: (courseId) => ({
+        url: `courses/${courseId}`,
+        method: "PATCH",
+        body: { archived: false },
+      }),
+      invalidatesTags: ["Courses"],
+    }),
     getUploadVideoUrl: build.mutation<
       { uploadUrl: string; videoUrl: string },
       {
@@ -267,4 +285,6 @@ export const {
   useGetUserEnrolledCoursesQuery,
   useGetUserCourseProgressQuery,
   useUpdateUserCourseProgressMutation,
+  useArchiveCourseMutation,
+  useUnarchiveCourseMutation,
 } = api;

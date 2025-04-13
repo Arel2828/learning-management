@@ -15,6 +15,8 @@ const TeacherCourseCard = ({
   course,
   onEdit,
   onDelete,
+  onArchive,
+  onUnarchive,
   isOwner,
 }: TeacherCourseCardProps) => {
   return (
@@ -82,6 +84,20 @@ const TeacherCourseCard = ({
                 >
                   <Trash2 className="w-4 h-4 mr-2" />
                   Delete
+                </Button>
+                <Button
+                  className="course-card-teacher__delete-button"
+                  onClick={() => onArchive(course)}
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Archive
+                </Button>
+                <Button
+                  className="course-card-teacher__delete-button"
+                  onClick={() => onUnarchive(course)}
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  UnArchive
                 </Button>
               </div>
             </>
