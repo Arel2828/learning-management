@@ -19,7 +19,7 @@ import {
 } from "@/state/api";
 import { useAppDispatch, useAppSelector } from "@/state/redux";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, Plus, X } from "lucide-react";
+import { ArrowLeft, Plus, Edit } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -45,10 +45,21 @@ const CourseEditor = () => {
   const [getUploadVideoUrl] = useGetUploadVideoUrlMutation();
   const [categories, setCategories] = useState<
     { value: string; label: string }[]
-  >([]);
+  >(() => {
+    if (typeof window !== "undefined") {
+      const savedCategories = localStorage.getItem("courseCategories");
+      return savedCategories ? JSON.parse(savedCategories) : [];
+    }
+    return [];
+  });
   const [newCategory, setNewCategory] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [image, setImage] = useState<File | null>(null);
+  const [editCategory, setEditCategory] = useState<{
+    value: string;
+    label: string;
+  } | null>(null);
+  const [editedCategoryName, setEditedCategoryName] = useState("");
 
   const dispatch = useAppDispatch();
   const { sections } = useAppSelector((state) => state.global.courseEditor);
@@ -65,6 +76,12 @@ const CourseEditor = () => {
   });
 
   useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("courseCategories", JSON.stringify(categories));
+    }
+  }, [categories]);
+
+  useEffect(() => {
     if (course) {
       methods.reset({
         courseTitle: course.title,
@@ -75,15 +92,15 @@ const CourseEditor = () => {
       });
       dispatch(setSections(course.sections || []));
 
-      // Add existing course category to categories list if not present
       if (course.category) {
         setCategories((prev) => {
           const exists = prev.some((c) => c.value === course.category);
           if (!exists) {
-            return [
+            const newCategories = [
               ...prev,
               { value: course.category, label: course.category },
             ];
+            return newCategories;
           }
           return prev;
         });
@@ -91,8 +108,14 @@ const CourseEditor = () => {
     }
   }, [course, methods]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    if (editCategory) {
+      setEditedCategoryName(editCategory.label);
+    }
+  }, [editCategory]);
+
   const handleImageUpload = async (file: File) => {
-    const uploadUrl = ""; // Use your server's upload URL
+    const uploadUrl = "";
     const fileType = file.type;
 
     try {
@@ -115,8 +138,26 @@ const CourseEditor = () => {
     }
   };
 
-  const handleRemoveCategory = (value: string) => {
-    setCategories((prev) => prev.filter((cat) => cat.value !== value));
+  const handleEditCategory = () => {
+    if (editCategory && editedCategoryName.trim()) {
+      const updatedCategories = categories.map((cat) =>
+        cat.value === editCategory.value
+          ? {
+              value: editedCategoryName.trim(),
+              label: editedCategoryName.trim(),
+            }
+          : cat
+      );
+
+      setCategories(updatedCategories);
+
+      if (methods.getValues("courseCategory") === editCategory.value) {
+        methods.setValue("courseCategory", editedCategoryName.trim());
+      }
+
+      setEditCategory(null);
+      setEditedCategoryName("");
+    }
   };
 
   const onSubmit = async (data: CourseFormData) => {
@@ -142,6 +183,7 @@ const CourseEditor = () => {
 
   return (
     <div>
+      {/* The rest of your component remains the same */}
       <div className="flex items-center gap-5 mb-5">
         <button
           className="flex items-center border border-customgreys-dirtyGrey rounded-lg p-2 gap-2 cursor-pointer hover:bg-customgreys-dirtyGrey hover:text-white-100 text-customgreys-dirtyGrey"
@@ -213,17 +255,19 @@ const CourseEditor = () => {
                       options={categories}
                       initialValue={course?.category}
                     />
-                    <div className="absolute right-2 top-7 flex gap-1">
+                    <div className="absolute right-2 top-7 flex gap-1 flex-wrap">
                       {categories.map((cat) => (
                         <span
                           key={cat.value}
-                          className="bg-gray-100 px-2 py-1 rounded-full text-xs flex items-center gap-1"
+                          className="bg-gray-100 px-2 py-1 rounded-full text-xs flex items-center gap-1 mb-1"
                         >
                           {cat.label}
-                          <X
-                            className="w-3 h-3 cursor-pointer hover:text-red-500"
-                            onClick={() => handleRemoveCategory(cat.value)}
-                          />
+                          <button
+                            onClick={() => setEditCategory(cat)}
+                            className="hover:text-primary-700"
+                          >
+                            <Edit className="w-3 h-3 cursor-pointer" />
+                          </button>
                         </span>
                       ))}
                     </div>
@@ -257,6 +301,25 @@ const CourseEditor = () => {
                     </DialogContent>
                   </Dialog>
                 </div>
+
+                <Dialog
+                  open={!!editCategory}
+                  onOpenChange={(open) => !open && setEditCategory(null)}
+                >
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Edit Category</DialogTitle>
+                    </DialogHeader>
+                    <Input
+                      value={editedCategoryName}
+                      onChange={(e) => setEditedCategoryName(e.target.value)}
+                      placeholder="Edit category name"
+                    />
+                    <DialogFooter>
+                      <Button onClick={handleEditCategory}>Save Changes</Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
 
                 <CustomFormField
                   name="coursePrice"
